@@ -1,5 +1,5 @@
 # Encryption Decryption Tools
-**GUI VERSION** This tools will help you to Encrypt and Decrypt Text in Caesar, AES, RSA Algorithm.
+This tools will help you to Encrypt and Decrypt Text in Caesar, AES, RSA Algorithm.
 
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
