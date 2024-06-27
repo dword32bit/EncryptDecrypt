@@ -90,6 +90,33 @@ def rsa_decrypt(encrypted_text, private_key):
     )
     return decrypted_text.decode('utf-8')
 
+def load_public_key(file_path):
+    with open(file_path, 'rb') as key_file:
+        public_key = serialization.load_pem_public_key(key_file.read())
+    return public_key
+
+def load_private_key(file_path):
+    with open(file_path, 'rb') as key_file:
+        private_key = serialization.load_pem_private_key(key_file.read(), password=None)
+    return private_key
+
+def save_public_key(public_key, file_path):
+    pem = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    with open(file_path, 'wb') as pem_out:
+        pem_out.write(pem)
+
+def save_private_key(private_key, file_path):
+    pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+    with open(file_path, 'wb') as pem_out:
+        pem_out.write(pem)
+
 sg.theme('LightGrey1')
 
 layout = [
@@ -100,14 +127,23 @@ layout = [
      sg.Radio('RSA', 'RADIO1', key='-RSA-', enable_events=True)],
     [sg.Text('Operation:'), sg.Radio('Encrypt', 'RADIO2', default=True, key='-ENCRYPT-', enable_events=True),
      sg.Radio('Decrypt', 'RADIO2', key='-DECRYPT-', enable_events=True)],
-    [sg.Text('Text to Encrypt/Decrypt:'), sg.InputText(key='-TEXT-')],
+    [sg.Text('Text to Encrypt/Decrypt:'), sg.InputText(key='-TEXT-', size=(78))],
     [sg.Text('Shift (0-25):'), sg.Slider(range=(0, 25), orientation='h', size=(20, 15), default_value=3, key='-SHIFT-')],
+    [sg.Text('Public Key File:'), sg.InputText(key='-PUBKEY-'), sg.FileBrowse()],
+    [sg.Text('Private Key File:'), sg.InputText(key='-PRIVKEY-'), sg.FileBrowse()],
+    [sg.Text('')],
     [sg.Text('Password:'), sg.InputText(key='-PASSWORD-', password_char='*')],
+    [sg.Text('')],
+    [sg.Button('Generate RSA Keys'), sg.Button('Save Public Key'), sg.Button('Save Private Key')],
     [sg.Button('Process'), sg.Button('Clear'), sg.Button('Exit')],
-    [sg.Multiline('', size=(60, 10), key='-OUTPUT-')]
+    [sg.Multiline('', size=(100, 20), key='-OUTPUT-')]
 ]
 
 window = sg.Window('Encryption/Decryption Tool', layout, resizable=False)
+
+# RSA Key variables
+private_key = None
+public_key = None
 
 while True:
     event, values = window.read()
@@ -116,10 +152,35 @@ while True:
     if event == 'Clear':
         window['-TEXT-'].update('')
         window['-OUTPUT-'].update('')
+    if event == 'Generate RSA Keys':
+        private_key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048
+        )
+        public_key = private_key.public_key()
+        window['-OUTPUT-'].print("[RSA Key Generation] Keys generated successfully.")
+    if event == 'Save Public Key':
+        if public_key:
+            save_path = sg.popup_get_file('Save Public Key', save_as=True, no_window=True)
+            if save_path:
+                save_public_key(public_key, save_path)
+                window['-OUTPUT-'].print(f"[Save Public Key] Public key saved to {save_path}.")
+        else:
+            sg.popup_error("Public key is not generated or loaded.")
+    if event == 'Save Private Key':
+        if private_key:
+            save_path = sg.popup_get_file('Save Private Key', save_as=True, no_window=True)
+            if save_path:
+                save_private_key(private_key, save_path)
+                window['-OUTPUT-'].print(f"[Save Private Key] Private key saved to {save_path}.")
+        else:
+            sg.popup_error("Private key is not generated or loaded.")
     if event == 'Process':
         text = values['-TEXT-']
         shift = int(values['-SHIFT-'])
         password = values['-PASSWORD-']
+        pubkey_file = values['-PUBKEY-']
+        privkey_file = values['-PRIVKEY-']
         try:
             if values['-CAESAR-']:
                 if values['-ENCRYPT-']:
@@ -136,18 +197,20 @@ while True:
                     result = aes_decrypt(text, password)
                     info = "[AES Decryption]"
             elif values['-RSA-']:
-                # Generate RSA keys
-                private_key = rsa.generate_private_key(
-                    public_exponent=65537,
-                    key_size=2048
-                )
-                public_key = private_key.public_key()
                 if values['-ENCRYPT-']:
-                    result = rsa_encrypt(text, public_key)
-                    info = "[RSA Encryption] [Public Key Used]"
+                    if pubkey_file:
+                        public_key = load_public_key(pubkey_file)
+                        result = rsa_encrypt(text, public_key)
+                        info = "[RSA Encryption] [Public Key Used]"
+                    else:
+                        raise ValueError("Public key file is required for RSA encryption.")
                 elif values['-DECRYPT-']:
-                    result = rsa_decrypt(text, private_key)
-                    info = "[RSA Decryption] [Private Key Used]"
+                    if privkey_file:
+                        private_key = load_private_key(privkey_file)
+                        result = rsa_decrypt(text, private_key)
+                        info = "[RSA Decryption] [Private Key Used]"
+                    else:
+                        raise ValueError("Private key file is required for RSA decryption.")
             window['-OUTPUT-'].print(info + ' Result: ' + result)
         except Exception as e:
             sg.popup_error(f"An error occurred: {e}")
