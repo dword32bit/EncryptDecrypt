@@ -27,7 +27,7 @@ This tools upgraded to a running exe application
 so, if you did'nt has a python installed on your device
 this tool always available just double click
 
-exe : 
+[Encryption_Decryption_Tool.exe](dist/Encryption_Decryption_Tool.exe) - exe file
 
 ## Credit & Thanks
 - [GeeksforGeeks](https://www.geeksforgeeks.org/caesar-cipher-in-cryptography/) - Reference Source
