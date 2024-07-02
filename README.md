@@ -1,5 +1,5 @@
 # Encryption Decryption Tools
-This tools will help you to Encryption and Decryption Text in Caesar, AES, RSA Algorithm.
+This tool provides a user-friendly interface for encrypting and decrypting text using Caesar, AES, and RSA algorithms.
 
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
@@ -12,7 +12,7 @@ This tools will help you to Encryption and Decryption Text in Caesar, AES, RSA A
 ## Installation
 
 ### - Linux
-Instructions on how to install Encryption Decryption Tools GUI. but install in CLI :v
+To install the Encryption Decryption Tools GUI, follow these steps:
 ```sh
 git clone https://github.com/dword32bit/EncryptDecrypt.git
 cd EncryptDecrypt
@@ -23,9 +23,7 @@ Run.
 python3 EnDec.py
 ```
 ### - Windows
-This tools upgraded to a running exe application
-so, if you did'nt has a python installed on your device
-this tool always available just double click
+We've got you covered! This tool is available as a standalone executable file, so you don't need to have Python installed on your device. Simply download and double-click to run:
 
 [Encryption_Decryption_Tool](https://raw.githubusercontent.com/dword32bit/EncryptDecrypt/main/dist/Encryption_Decryption_Tool.exe) - exe file
 
