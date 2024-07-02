@@ -7,6 +7,7 @@ This tools will help you to Encrypt and Decrypt Text in Caesar, AES, RSA Algorit
 ## Requirement
 - Python(3):
     - PySimpleGUI
+    - cryptography
 
 ## Installation
 
@@ -21,6 +22,12 @@ Run.
 ```sh
 python3 EnDec.py
 ```
+### - Windows
+This tools upgraded to a running exe application
+so, if you did'nt has a python installed on your device
+this tool always available just double click
+
+exe : 
 
 ## Credit & Thanks
 - [GeeksforGeeks](https://www.geeksforgeeks.org/caesar-cipher-in-cryptography/) - Reference Source
