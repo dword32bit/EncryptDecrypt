@@ -16,6 +16,11 @@ This tool provides a user-friendly interface for encrypting and decrypting text 
 
 ## Installation
 
+### - Windows
+We've got you covered! This tool is available as a standalone executable file, so you don't need to have Python installed on your device. Simply download and double-click to run:
+
+[Encryption_Decryption_Tool](https://raw.githubusercontent.com/dword32bit/EncryptDecrypt/main/dist/Encryption_Decryption_Tool.exe) - exe file
+
 ### - Linux
 To install the Encryption Decryption Tools GUI, follow these steps:
 ```sh
@@ -27,10 +32,6 @@ Run.
 ```sh
 python3 EnDec.py
 ```
-### - Windows
-We've got you covered! This tool is available as a standalone executable file, so you don't need to have Python installed on your device. Simply download and double-click to run:
-
-[Encryption_Decryption_Tool](https://raw.githubusercontent.com/dword32bit/EncryptDecrypt/main/dist/Encryption_Decryption_Tool.exe) - exe file
 
 ## Credit & Thanks
 - [GeeksforGeeks](https://www.geeksforgeeks.org/caesar-cipher-in-cryptography/) - Reference Source
