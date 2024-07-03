@@ -9,7 +9,7 @@ This tool provides a user-friendly interface for encrypting and decrypting text 
 
 
 
-## Requirement
+### Requirement
 - Python(3):
     - PySimpleGUI
     - cryptography
